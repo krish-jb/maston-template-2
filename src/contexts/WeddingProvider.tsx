@@ -1,38 +1,7 @@
 
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { WeddingData, User, WeddingWishType } from "@/types/wedding";
-import { supabase } from "@/integrations/supabase/client";
-import {
-    AuthError,
-    Session,
-    User as SupabaseUser,
-} from "@supabase/supabase-js";
-import { Json } from "@/integrations/supabase/types";
 import { WeddingContext } from "./WeddingContext";
-
-export interface WeddingContextType {
-    weddingData: WeddingData;
-    weddingWishes: WeddingWishType[];
-    setWeddingWishes: Dispatch<SetStateAction<WeddingWishType[]>>;
-    user: User | null;
-    session: Session | null;
-    isLoggedIn: boolean;
-    globalIsLoading: boolean;
-    updateWeddingData: (data: Partial<WeddingData>) => void;
-    loadAllWeddingWishes: () => Promise<void>;
-    saveData: (data: WeddingData) => Promise<void>;
-    addWish: (data: { name: string; message: string }) => Promise<void>;
-    login: (
-        email: string,
-        password: string,
-    ) => Promise<{ error: AuthError | null }>;
-    signUp: (
-        email: string,
-        password: string,
-        fullName?: string,
-    ) => Promise<{ error: AuthError | null }>;
-    logout: () => Promise<void>;
-}
 
 const defaultWeddingData: WeddingData = {
     couple: {
@@ -139,213 +108,68 @@ const defaultWeddingData: WeddingData = {
 export const WeddingProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [weddingData, setWeddingData] =
-        useState<WeddingData>(defaultWeddingData);
+    const [weddingData, setWeddingData] = useState<WeddingData>(defaultWeddingData);
     const [weddingWishes, setWeddingWishes] = useState<WeddingWishType[]>([]);
     const [user, setUser] = useState<User | null>(null);
-    const [session, setSession] = useState<Session | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [globalIsLoading, setGlobalIsLoading] = useState(true);
+    const [globalIsLoading, setGlobalIsLoading] = useState(false);
 
     useEffect(() => {
-        // Set up auth state listener
-        const {
-            data: { subscription },
-        } = supabase.auth.onAuthStateChange((event, session) => {
-            setSession(session);
-            setTimeout(() => {
-                loadWeddingData(import.meta.env.VITE_WEBSITE_KEY || 'default');
-            }, 0);
-            if (session?.user) {
-                const mappedUser: User = {
-                    id: session.user.id,
-                    email: session.user.email || "",
-                    isAuthenticated: true,
-                };
-                setUser(mappedUser);
-                setIsLoggedIn(true);
-            } else {
-                setUser(null);
-                setIsLoggedIn(false);
-            }
-        });
-
-        // Check for existing session
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setSession(session);
-            if (session?.user) {
-                const mappedUser: User = {
-                    id: session.user.id,
-                    email: session.user.email || "",
-                    isAuthenticated: true,
-                };
-                setUser(mappedUser);
-                setIsLoggedIn(true);
-                loadWeddingData(import.meta.env.VITE_WEBSITE_KEY || 'default');
-            } else {
-                // Load default data for non-logged in users
-                setGlobalIsLoading(false);
-            }
-        });
-
-        return () => subscription.unsubscribe();
+        // For now, we'll use mock authentication
+        // You can replace this with your actual backend integration
+        setGlobalIsLoading(false);
     }, []);
-
-    const loadWeddingData = async (id: string) => {
-        try {
-            const { data: weddingData, error: weddingError } = await supabase
-                .from("wedding_data")
-                .select("data")
-                .eq("id", id)
-                .maybeSingle();
-
-            const { data: wishData, error: wishError } = await supabase
-                .from("guest_wishes")
-                .select("id, name, message")
-                .eq("variant", id)
-                .order("created_at", { ascending: false })
-                .limit(3);
-
-            if (weddingError) {
-                console.error("Error loading wedding data:", weddingError);
-                setGlobalIsLoading(false);
-                return;
-            }
-
-            if (wishError) {
-                console.error("Error loading wish data: ", wishError);
-            }
-
-            if (weddingData?.data) {
-                setWeddingData(weddingData.data as unknown as WeddingData);
-            }
-
-            if (wishData) {
-                setWeddingWishes(wishData);
-            }
-            
-            setGlobalIsLoading(false);
-        } catch (error) {
-            console.error("Error loading wedding data:", error);
-            setGlobalIsLoading(false);
-        }
-    };
-
-    const loadAllWeddingWishes = async () => {
-        try {
-            const { data: wishData, error: wishError } = await supabase
-                .from("guest_wishes")
-                .select("id, name, message")
-                .eq("variant", import.meta.env.VITE_WEBSITE_KEY || 'default')
-                .order("created_at", { ascending: false });
-
-            if (wishError) {
-                console.log(
-                    "Error loading all wishes (Supabase error): ",
-                    wishError,
-                );
-                return;
-            }
-
-            if (wishData) {
-                setWeddingWishes(wishData);
-            }
-        } catch (error) {
-            console.log("Error loading all wishes: ", error);
-        }
-    };
 
     const updateWeddingData = (data: Partial<WeddingData>) => {
         setWeddingData((prev) => {
             const updated = { ...prev, ...data };
-            saveData(updated); // save to backend
-
+            saveData(updated);
             return updated;
         });
     };
 
     const saveData = async (data: WeddingData) => {
-        if (!user?.id) {
-            console.error("No user logged in");
-            return;
-        }
+        // Mock save function - replace with your backend call
+        console.log("Saving data:", data);
+    };
 
-        try {
-            const { error } = await supabase.from("wedding_data").upsert(
-                {
-                    user_id: user.id,
-                    data: data as unknown as Json,
-                    updated_at: new Date().toISOString(),
-                },
-                { onConflict: "user_id" },
-            );
-
-            if (error) {
-                console.error("Error saving wedding data:", error);
-            }
-        } catch (error) {
-            console.error("Error saving wedding data:", error);
-        }
+    const loadAllWeddingWishes = async () => {
+        // Mock function - replace with your backend call
+        console.log("Loading all wishes");
     };
 
     const addWish = async (wish: { name: string; message: string }) => {
-        try {
-            const { error } = await supabase.from("guest_wishes").insert({
-                name: wish.name,
-                message: wish.message,
-                variant: import.meta.env.VITE_WEBSITE_KEY || 'default',
-            });
-
-            if (error) {
-                console.log("Error adding new wish(Supabase error)", error);
-            } else {
-                // Refresh wishes after adding
-                const { data: wishData } = await supabase
-                    .from("guest_wishes")
-                    .select("id, name, message")
-                    .eq("variant", import.meta.env.VITE_WEBSITE_KEY || 'default')
-                    .order("created_at", { ascending: false })
-                    .limit(3);
-                
-                if (wishData) {
-                    setWeddingWishes(wishData);
-                }
-            }
-        } catch (error) {
-            console.log("Error adding new wish", error);
-        }
+        // Mock function - replace with your backend call
+        const newWish: WeddingWishType = {
+            id: Date.now().toString(),
+            name: wish.name,
+            message: wish.message,
+        };
+        setWeddingWishes(prev => [newWish, ...prev]);
     };
 
     const login = async (email: string, password: string) => {
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
-        return { error };
+        // Mock login - replace with your backend call
+        if (email === "admin@test.com" && password === "password") {
+            setUser({
+                id: "1",
+                email: email,
+                isAuthenticated: true,
+            });
+            setIsLoggedIn(true);
+            return { error: null };
+        }
+        return { error: { message: "Invalid credentials" } };
     };
 
-    const signUp = async (
-        email: string,
-        password: string,
-        fullName?: string,
-    ) => {
-        const redirectUrl = `${window.location.origin}/`;
-
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                emailRedirectTo: redirectUrl,
-                data: {
-                    full_name: fullName,
-                },
-            },
-        });
-        return { error };
+    const signUp = async (email: string, password: string, fullName?: string) => {
+        // Mock signup - replace with your backend call
+        return { error: null };
     };
 
     const logout = async () => {
-        await supabase.auth.signOut();
+        setUser(null);
+        setIsLoggedIn(false);
     };
 
     return (
@@ -353,14 +177,12 @@ export const WeddingProvider: React.FC<{ children: React.ReactNode }> = ({
             value={{
                 weddingData,
                 weddingWishes,
-                setWeddingWishes,
-                loadAllWeddingWishes,
                 user,
-                session,
                 isLoggedIn,
                 globalIsLoading,
                 updateWeddingData,
                 saveData,
+                loadAllWeddingWishes,
                 addWish,
                 login,
                 signUp,
