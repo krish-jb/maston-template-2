@@ -26,7 +26,7 @@ export const WishesSection: React.FC = () => {
     }
 
     try {
-      await addWish({ name: guestName, message: wishMessage });
+      await addWish({ id: "", name: guestName, message: wishMessage });
       setGuestName('');
       setWishMessage('');
       setIsOpen(false);
