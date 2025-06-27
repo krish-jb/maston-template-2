@@ -35,11 +35,12 @@ export const HeroSection: React.FC = () => {
     return (
         <section
             id="hero"
-            className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 pt-20"
+            className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 pt-20"
         >
             <EditableImage
                 label="Update Cover Image"
                 onUpdate={updateHeroImage}
+                className=""
             >
                 <div className="absolute w-full h-full inset-0 z-0 pointer-events-none object-cover">
                     <img
@@ -56,9 +57,9 @@ export const HeroSection: React.FC = () => {
                         value={weddingData.couple.weddingQuote}
                         onSave={updateQuote}
                         multiline
-                        className="font-Mogra text-2xl md:text-5xl font-bold text-white italic leading-relaxed"
+                        className="font-Pacifico text-2xl md:text-5xl font-bold text-pink-300 italic leading-relaxed"
                     >
-                        <p className="font-Mogra text-2xl md:text-5xl font-bold text-white italic leading-relaxed">
+                        <p className="font-Mogra text-2xl md:text-5xl font-bold text-pink-300 italic leading-relaxed">
                             "{weddingData.couple.weddingQuote}"
                         </p>
                     </EditableText>

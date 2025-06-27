@@ -1,6 +1,7 @@
 import type React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import FadeIn from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWedding } from "@/contexts/WeddingContext";
@@ -26,22 +27,24 @@ const AllWishes: React.FC = () => {
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    {weddingWishes.map((wish) => (
-                        <Card
-                            key={wish.id}
-                            className="hover:shadow-lg transition-shadow"
-                        >
-                            <CardHeader>
-                                <CardTitle className="text-pink-600">
-                                    {wish.name}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-600 italic">
-                                    "{wish.message}"
-                                </p>
-                            </CardContent>
-                        </Card>
+                    {weddingWishes.map((wish, index) => (
+                        <FadeIn key={`${wish.id}_fade_in`} delay={100 * index}>
+                            <Card
+                                key={wish.id}
+                                className="hover:shadow-lg transition-shadow"
+                            >
+                                <CardHeader>
+                                    <CardTitle className="text-pink-600">
+                                        {wish.name}
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-gray-600 italic">
+                                        "{wish.message}"
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </FadeIn>
                     ))}
                 </div>
 

@@ -93,7 +93,7 @@ export default {
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
             fontFamily: {
-                Mogra: ["Mogra", "sans-serif"],
+                Pacifico: ["Pacifico", "sans-serif"],
             },
         },
     },
