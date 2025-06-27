@@ -1,6 +1,6 @@
-import { User } from "@/types/wedding";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import type { User } from "@/types/wedding";
 
 const deleteImage = async (user: User, name: string) => {
     const imagePath = `user_uploads/${user.id}/${name}`;
