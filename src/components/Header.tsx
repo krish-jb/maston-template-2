@@ -71,52 +71,52 @@ export const Header: React.FC = () => {
                     <HeartIcon color={loveColor} width={25} />
                 </Link>
 
-                <div className="hidden md:flex space-x-6">
+                <div className="hidden md:flex space-x-6 font-light">
                     <button
                         onClick={() => scrollToSection("hero")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
                         type="button"
                     >
                         Home
                     </button>
                     <button
                         onClick={() => scrollToSection("story")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
                         type="button"
                     >
                         Our Story
                     </button>
                     <button
                         onClick={() => scrollToSection("details")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
                         type="button"
                     >
                         Details
                     </button>
                     <button
                         onClick={() => scrollToSection("schedule")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
                         type="button"
                     >
                         Schedule
                     </button>
                     <button
                         onClick={() => scrollToSection("gallery")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
                         type="button"
                     >
                         Gallery
                     </button>
                     <button
                         onClick={() => scrollToSection("wishes")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
                         type="button"
                     >
                         Wishes
                     </button>
                     <button
                         onClick={() => scrollToSection("contact")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
                         type="button"
                     >
                         Contact
@@ -166,51 +166,51 @@ export const Header: React.FC = () => {
                     <span className="block w-6 h-0.5 bg-foreground transform -rotate-45" />
                 </button>
 
-                <nav className="flex flex-col space-y-6 text-lg bg-white">
+                <nav className="flex flex-col space-y-6 text-lg bg-white font-light">
                     <button
-                        className="text-left hover:text-orangery-500 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                         onClick={() => scrollToSection("home")}
                         type="button"
                     >
                         Home
                     </button>
                     <button
-                        className="text-left hover:text-orangery-500 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                         onClick={() => scrollToSection("story")}
                         type="button"
                     >
                         Our Story
                     </button>
                     <button
-                        className="text-left hover:text-orangery-500 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                         onClick={() => scrollToSection("wedding-details")}
                         type="button"
                     >
                         Details
                     </button>
                     <button
-                        className="text-left hover:text-orangery-500 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                         onClick={() => scrollToSection("schedule")}
                         type="button"
                     >
                         Schedule
                     </button>
                     <button
-                        className="text-left hover:text-orangery-500 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                         onClick={() => scrollToSection("gallery")}
                         type="button"
                     >
                         Gallery
                     </button>
                     <button
-                        className="text-left hover:text-orangery-500 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                         onClick={() => scrollToSection("schedule")}
                         type="button"
                     >
                         Wishes
                     </button>
                     <button
-                        className="text-left hover:text-orangery-500 transition-colors"
+                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                         onClick={() => scrollToSection("gallery")}
                         type="button"
                     >
@@ -218,7 +218,7 @@ export const Header: React.FC = () => {
                     </button>
                     {isLoggedIn && (
                         <button
-                            className="text-left hover:text-orangery-500 transition-colors"
+                            className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                             onClick={handleLogout}
                             type="button"
                         >

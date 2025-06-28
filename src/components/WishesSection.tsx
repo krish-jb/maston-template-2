@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useWedding } from "@/contexts/WeddingContext";
 import { useToast } from "@/hooks/use-toast";
 import type { WeddingWishType } from "@/types/wedding";
+import FadeIn from "./animations/FadeIn";
 
 export const WishesSection: React.FC = () => {
     const { weddingWishes, addWish, setWeddingWishes } = useWedding();
@@ -118,19 +119,24 @@ export const WishesSection: React.FC = () => {
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    {weddingWishes.slice(0, 3).map((wish) => (
-                        <Card key={wish.id}>
-                            <CardHeader>
-                                <CardTitle className="text-pink-600">
-                                    {wish.name}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-600 italic">
-                                    "{wish.message}"
-                                </p>
-                            </CardContent>
-                        </Card>
+                    {weddingWishes.slice(0, 3).map((wish, index) => (
+                        <FadeIn
+                            delay={100 * (index + 1)}
+                            key={`fade-${wish.id}`}
+                        >
+                            <Card key={wish.id}>
+                                <CardHeader>
+                                    <CardTitle className="text-pink-600">
+                                        {wish.name}
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-gray-600 italic">
+                                        "{wish.message}"
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </FadeIn>
                     ))}
                 </div>
             </div>

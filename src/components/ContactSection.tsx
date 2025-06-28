@@ -4,6 +4,7 @@ import { useWedding } from "@/contexts/WeddingContext";
 import { EditableText } from "./EditableText";
 import EditableLink from "./editable/EditableLink";
 import MapsIconButton from "./ui-custom/MapsIconButton";
+import FadeIn from "./animations/FadeIn";
 
 export const ContactSection: React.FC = () => {
     const { weddingData, updateWeddingData, isLoggedIn } = useWedding();
@@ -25,84 +26,87 @@ export const ContactSection: React.FC = () => {
                 </h2>
 
                 <div className="max-w-2xl mx-auto">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="text-center text-pink-600">
-                                Get in Touch
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div>
-                                <strong className="text-gray-800">
-                                    Phone:
-                                </strong>
-                                <EditableText
-                                    value={weddingData.contact.phone}
-                                    onSave={(value) =>
-                                        updateContact("phone", value)
-                                    }
-                                    className="ml-2"
-                                >
-                                    <span className="ml-2 text-gray-600">
-                                        {weddingData.contact.phone}
-                                    </span>
-                                </EditableText>
-                            </div>
-
-                            <div>
-                                <strong className="text-gray-800">
-                                    Email:
-                                </strong>
-                                <EditableText
-                                    value={weddingData.contact.email}
-                                    onSave={(value) =>
-                                        updateContact("email", value)
-                                    }
-                                    className="ml-2"
-                                >
-                                    <span className="ml-2 text-gray-600">
-                                        {weddingData.contact.email}
-                                    </span>
-                                </EditableText>
-                            </div>
-
-                            <div>
-                                <p>
+                    <FadeIn>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-center text-pink-600">
+                                    Get in Touch
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div>
                                     <strong className="text-gray-800">
-                                        Address:
+                                        Phone:
                                     </strong>
-                                </p>
-                                <div className="flex justify-between">
-                                    <EditableLink
-                                        text={weddingData.contact.address}
-                                        link={
-                                            weddingData.contact.addressMapLink
-                                        }
+                                    <EditableText
+                                        value={weddingData.contact.phone}
                                         onSave={(value) =>
-                                            updateContact("address", value)
+                                            updateContact("phone", value)
                                         }
-                                        className="ml-2 max-w-64"
-                                        label="Edit Address and Link"
+                                        className="ml-2"
                                     >
-                                        <span>
-                                            {weddingData.contact.address}
+                                        <span className="ml-2 text-gray-600">
+                                            {weddingData.contact.phone}
                                         </span>
-                                    </EditableLink>
-                                    <div>
-                                        <MapsIconButton
-                                            onClick={() => {
-                                                window.open(
-                                                    weddingData.contact
-                                                        .addressMapLink,
-                                                    "_blank",
-                                                );
-                                            }}
-                                        />
+                                    </EditableText>
+                                </div>
+
+                                <div>
+                                    <strong className="text-gray-800">
+                                        Email:
+                                    </strong>
+                                    <EditableText
+                                        value={weddingData.contact.email}
+                                        onSave={(value) =>
+                                            updateContact("email", value)
+                                        }
+                                        className="ml-2"
+                                    >
+                                        <span className="ml-2 text-gray-600">
+                                            {weddingData.contact.email}
+                                        </span>
+                                    </EditableText>
+                                </div>
+
+                                <div>
+                                    <p>
+                                        <strong className="text-gray-800">
+                                            Address:
+                                        </strong>
+                                    </p>
+                                    <div className="flex justify-between">
+                                        <EditableLink
+                                            text={weddingData.contact.address}
+                                            link={
+                                                weddingData.contact
+                                                    .addressMapLink
+                                            }
+                                            onSave={(value) =>
+                                                updateContact("address", value)
+                                            }
+                                            className="ml-2 max-w-64"
+                                            label="Edit Address and Link"
+                                        >
+                                            <span>
+                                                {weddingData.contact.address}
+                                            </span>
+                                        </EditableLink>
+                                        <div>
+                                            <MapsIconButton
+                                                onClick={() => {
+                                                    window.open(
+                                                        weddingData.contact
+                                                            .addressMapLink,
+                                                        "_blank",
+                                                    );
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
+                    </FadeIn>
                 </div>
             </div>
         </section>
