@@ -11,34 +11,11 @@ export interface WeddingData {
         image: string;
     };
     weddingDetails: {
-        event1: {
-            title: string;
-            date: string;
-            time: string;
-            venue: string;
-            address: string;
-            addressMapLink: string;
-        };
-        event2: {
-            title: string;
-            date: string;
-            time: string;
-            venue: string;
-            address: string;
-            addressMapLink: string;
-        };
-        toKnow1: {
-            title: string;
-            description: string;
-        };
-        toKnow2: {
-            title: string;
-            description: string;
-        };
-        toKnow3: {
-            title: string;
-            description: string;
-        };
+        event1: EventDetails;
+        event2: EventDetails;
+        toKnow1: ToKnow;
+        toKnow2: ToKnow;
+        toKnow3: ToKnow;
     };
     schedule: Array<{
         id: string;
@@ -69,6 +46,19 @@ export interface WeddingData {
     };
 }
 
+export interface EventDetails {
+    title: string;
+    date: string;
+    time: string;
+    venue: string;
+    address: string;
+    addressMapLink: string;
+}
+
+export interface ToKnow {
+    title: string;
+    description: string;
+}
 export interface ScheduleItem {
     id: string;
     time: string;

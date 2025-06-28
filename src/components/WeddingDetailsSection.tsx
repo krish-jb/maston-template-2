@@ -1,21 +1,13 @@
 import type React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWedding } from "@/contexts/WeddingContext";
-import { useToast } from "@/hooks/use-toast";
+import confirmationMessage from "@/utils/ConfimationMessage";
+import Address from "./Address";
 import FadeIn from "./animations/FadeIn";
 import { EditableText } from "./EditableText";
-import EditableLink from "./editable/EditableLink";
-import MapsIconButton from "./ui-custom/MapsIconButton";
 
 export const WeddingDetailsSection: React.FC = () => {
-    const { weddingData, updateWeddingData, isLoggedIn } = useWedding();
-    const { toast } = useToast();
-
-    const confirmationMessage = (event: string) => {
-        toast({
-            title: `Successfully updated ${event}`,
-        });
-    };
+    const { weddingData, updateWeddingData } = useWedding();
 
     const updateEventDetails = async (
         event: "event1" | "event2" | "toKnow1" | "toKnow2" | "toKnow3",
@@ -34,28 +26,6 @@ export const WeddingDetailsSection: React.FC = () => {
         if (success) confirmationMessage(field);
     };
 
-    const updateEventAddress = async (
-        event: "event1" | "event2",
-        text: string,
-        link: string,
-    ) => {
-        const success: boolean = await updateWeddingData({
-            weddingDetails: {
-                ...weddingData.weddingDetails,
-                [event]: {
-                    ...(weddingData.weddingDetails[event] || {}),
-                    address: text,
-                    addressMapLink: link,
-                },
-            },
-        });
-        if (success) confirmationMessage("address");
-    };
-
-    const openMapLinkInNewTab = (link: string) => {
-        window.open(link, "_blank");
-    };
-
     return (
         <section id="details" className="py-20 bg-gray-50">
             <div className="container mx-auto px-4">
@@ -64,7 +34,7 @@ export const WeddingDetailsSection: React.FC = () => {
                         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">
                             Wedding Details
                         </h2>
-                        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        <p className="text-md md:text-lg text-muted-foreground max-w-2xl mx-auto">
                             Everything you need to know about our special day
                         </p>
                     </div>
@@ -72,7 +42,7 @@ export const WeddingDetailsSection: React.FC = () => {
                 <div className="grid md:grid-cols-2 gap-8 mb-12">
                     {/* Event 1 */}
                     <FadeIn>
-                        <Card>
+                        <Card className="w-full h-full">
                             <CardHeader>
                                 <EditableText
                                     value={
@@ -140,6 +110,7 @@ export const WeddingDetailsSection: React.FC = () => {
                                             value,
                                         )
                                     }
+                                    className="max-w-sm md:max-w-full"
                                 >
                                     <p>
                                         <strong>Venue:</strong>{" "}
@@ -149,69 +120,12 @@ export const WeddingDetailsSection: React.FC = () => {
                                         }
                                     </p>
                                 </EditableText>
-                                <div
-                                    className={
-                                        isLoggedIn
-                                            ? "w-full"
-                                            : "flex flex-row gap-1 justify-between"
+                                <Address
+                                    event="event1"
+                                    eventDetails={
+                                        weddingData.weddingDetails.event1
                                     }
-                                >
-                                    <div
-                                        className={
-                                            isLoggedIn
-                                                ? "w-full"
-                                                : "flex flex-rowex-row"
-                                        }
-                                    >
-                                        {!isLoggedIn && (
-                                            <p>
-                                                <strong>Address:</strong>{" "}
-                                            </p>
-                                        )}
-                                        <EditableLink
-                                            text={
-                                                weddingData.weddingDetails
-                                                    .event1.address
-                                            }
-                                            link={
-                                                weddingData.weddingDetails
-                                                    .event1.addressMapLink
-                                            }
-                                            onSave={(text, link) =>
-                                                updateEventAddress(
-                                                    "event1",
-                                                    text,
-                                                    link,
-                                                )
-                                            }
-                                            label={`Edit ${weddingData.weddingDetails.event1.title} Address`}
-                                        >
-                                            <p className="m-0">
-                                                {isLoggedIn && (
-                                                    <>
-                                                        <strong className="m-0">
-                                                            Address:
-                                                        </strong>{" "}
-                                                    </>
-                                                )}
-                                                {`${
-                                                    weddingData.weddingDetails
-                                                        .event1.address
-                                                }`}
-                                            </p>
-                                        </EditableLink>
-                                    </div>
-                                    {!isLoggedIn && (
-                                        <MapsIconButton
-                                            onClick={() => {
-                                                openMapLinkInNewTab(
-                                                    weddingData.weddingDetails
-                                                        .event1.addressMapLink,
-                                                );
-                                            }}
-                                        />
-                                    )}
-                                </div>
+                                />
                             </CardContent>
                         </Card>
                     </FadeIn>
@@ -295,69 +209,12 @@ export const WeddingDetailsSection: React.FC = () => {
                                         }
                                     </p>
                                 </EditableText>
-                                <div
-                                    className={
-                                        isLoggedIn
-                                            ? "w-full"
-                                            : "flex flex-row gap-1 justify-between"
+                                <Address
+                                    event="event2"
+                                    eventDetails={
+                                        weddingData.weddingDetails.event2
                                     }
-                                >
-                                    <div
-                                        className={
-                                            isLoggedIn
-                                                ? "w-full"
-                                                : "flex flex-rowex-row"
-                                        }
-                                    >
-                                        {!isLoggedIn && (
-                                            <p>
-                                                <strong>Address:</strong>{" "}
-                                            </p>
-                                        )}
-                                        <EditableLink
-                                            text={
-                                                weddingData.weddingDetails
-                                                    .event2.address
-                                            }
-                                            link={
-                                                weddingData.weddingDetails
-                                                    .event2.addressMapLink
-                                            }
-                                            onSave={(text, link) =>
-                                                updateEventAddress(
-                                                    "event2",
-                                                    text,
-                                                    link,
-                                                )
-                                            }
-                                            label={`Edit ${weddingData.weddingDetails.event2.title} Address`}
-                                        >
-                                            <p className="m-0">
-                                                {isLoggedIn && (
-                                                    <>
-                                                        <strong className="m-0">
-                                                            Address:
-                                                        </strong>{" "}
-                                                    </>
-                                                )}
-                                                {`${
-                                                    weddingData.weddingDetails
-                                                        .event2.address
-                                                }`}
-                                            </p>
-                                        </EditableLink>
-                                    </div>
-                                    {!isLoggedIn && (
-                                        <MapsIconButton
-                                            onClick={() => {
-                                                openMapLinkInNewTab(
-                                                    weddingData.weddingDetails
-                                                        .event2.addressMapLink,
-                                                );
-                                            }}
-                                        />
-                                    )}
-                                </div>
+                                />
                             </CardContent>
                         </Card>
                     </FadeIn>

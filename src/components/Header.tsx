@@ -1,7 +1,7 @@
 import { HeartIcon } from "lucide-react";
 import type React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useWedding } from "@/contexts/WeddingContext";
 import { useToast } from "@/hooks/use-toast";
@@ -13,6 +13,7 @@ export const Header: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
     const { toast } = useToast();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -28,6 +29,13 @@ export const Header: React.FC = () => {
     }, [isScrolled]);
 
     const scrollToSection = (sectionId: string) => {
+        if (location.pathname !== "/") {
+            navigate("/");
+            return;
+        }
+        if (isMobileMenuOpen) {
+            setIsMobileMenuOpen(false);
+        }
         const element = document.getElementById(sectionId);
         if (element) {
             element.scrollIntoView({ behavior: "smooth" });
@@ -53,7 +61,7 @@ export const Header: React.FC = () => {
                 <Link
                     to="/"
                     className={cn(
-                        "flex flex-row gap-2 text-xl font-Mogra",
+                        "flex flex-row gap-2 text-xl font-Pacifico",
                         isScrolled ? "text-pink-500" : "text-black",
                     )}
                 >
@@ -193,6 +201,20 @@ export const Header: React.FC = () => {
                         type="button"
                     >
                         Gallery
+                    </button>
+                    <button
+                        className="text-left hover:text-orangery-500 transition-colors"
+                        onClick={() => scrollToSection("schedule")}
+                        type="button"
+                    >
+                        Wishes
+                    </button>
+                    <button
+                        className="text-left hover:text-orangery-500 transition-colors"
+                        onClick={() => scrollToSection("gallery")}
+                        type="button"
+                    >
+                        Contact
                     </button>
                     {isLoggedIn && (
                         <button

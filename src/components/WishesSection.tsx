@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useWedding } from "@/contexts/WeddingContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     Dialog,
     DialogContent,
@@ -11,9 +10,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useWedding } from "@/contexts/WeddingContext";
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
-import { WeddingWishType } from "@/types/wedding";
+import type { WeddingWishType } from "@/types/wedding";
 
 export const WishesSection: React.FC = () => {
     const { weddingWishes, addWish, setWeddingWishes } = useWedding();

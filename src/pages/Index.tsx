@@ -11,6 +11,7 @@ import { StorySection } from "@/components/StorySection";
 import { WeddingDetailsSection } from "@/components/WeddingDetailsSection";
 import { WishesSection } from "@/components/WishesSection";
 import { useWedding } from "@/contexts/WeddingContext";
+import Footer from "@/components/Footer";
 
 const Index: React.FC = () => {
     const { globalIsLoading } = useWedding();
@@ -31,6 +32,7 @@ const Index: React.FC = () => {
             <MoreInfoSection />
             <ContactSection />
             <JewellerSection />
+            <Footer />
         </div>
     );
 };

@@ -1,9 +1,9 @@
 import type React from "react";
 import { useWedding } from "@/contexts/WeddingContext";
 import uploadImage from "@/utils/UploadImage";
+import FadeIn from "./animations/FadeIn";
 import { EditableText } from "./EditableText";
 import EditableImage from "./editable/EditableImage";
-import FadeIn from "./animations/FadeIn";
 
 export const StorySection: React.FC = () => {
     const { weddingData, updateWeddingData, user } = useWedding();
@@ -34,7 +34,7 @@ export const StorySection: React.FC = () => {
         >
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center">
-                    <span className="text-sm md:text-base font-medium text-orangery-500 mb-2 inline-block">
+                    <span className="text-sm text-muted-foreground md:text-base font-medium mb-2 inline-block">
                         Our Story
                     </span>
                     <EditableText

@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useWedding } from "@/contexts/WeddingContext";
 import type { ScheduleItem } from "@/types/wedding";
-import { EditableText } from "./EditableText";
 import FadeIn from "./animations/FadeIn";
+import { EditableText } from "./EditableText";
 
 export const ScheduleSection: React.FC = () => {
     const { weddingData, updateWeddingData, isLoggedIn } = useWedding();
@@ -24,9 +24,9 @@ export const ScheduleSection: React.FC = () => {
     const addScheduleItem = () => {
         const newItem: ScheduleItem = {
             id: Date.now().toString(),
-            time: "",
-            event: "",
-            description: "",
+            time: "1:00 PM",
+            event: "Dinner",
+            description: "Food and Drinks",
         };
         updateWeddingData({
             schedule: [...weddingData.schedule, newItem],
@@ -47,6 +47,9 @@ export const ScheduleSection: React.FC = () => {
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
                         Wedding Schedule
                     </h2>
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                        Here's how our special day will unfold
+                    </p>
                     {isLoggedIn && (
                         <Button onClick={addScheduleItem} className="mb-8">
                             <Plus className="mr-2 h-4 w-4" />

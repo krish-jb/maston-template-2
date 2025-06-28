@@ -1,0 +1,73 @@
+import { useWedding } from "@/contexts/WeddingContext";
+import type { EventDetails } from "@/types/wedding";
+import confirmationMessage from "@/utils/ConfimationMessage";
+import EditableLink from "./editable/EditableLink";
+import MapsIconButton from "./ui-custom/MapsIconButton";
+
+interface AddressProps {
+    event: "event1" | "event2";
+    eventDetails: EventDetails;
+}
+
+const Address: React.FC<AddressProps> = ({ event, eventDetails }) => {
+    const { isLoggedIn, updateWeddingData, weddingData } = useWedding();
+    const openMapLinkInNewTab = (link: string) => {
+        window.open(link, "_blank");
+    };
+
+    const updateEventAddress = async (
+        event: "event1" | "event2",
+        text: string,
+        link: string,
+    ) => {
+        const success: boolean = await updateWeddingData({
+            weddingDetails: {
+                ...weddingData.weddingDetails,
+                [event]: {
+                    ...(weddingData.weddingDetails[event] || {}),
+                    address: text,
+                    addressMapLink: link,
+                },
+            },
+        });
+        if (success) confirmationMessage("address");
+    };
+
+    return (
+        <div className="w-full inline-flex">
+            {!isLoggedIn && (
+                <p className="">
+                    <strong>Address:</strong>
+                </p>
+            )}
+            <div
+                className={
+                    isLoggedIn ? "w-full" : "w-full inline-flex justify-between"
+                }
+            >
+                <EditableLink
+                    text={eventDetails.address}
+                    link={eventDetails.addressMapLink}
+                    onSave={(text, link) =>
+                        updateEventAddress(event, text, link)
+                    }
+                    label={`Edit ${eventDetails.title} Address`}
+                    className="flex items-startem"
+                >
+                    <p>
+                        <strong>Address:</strong> {eventDetails.address}
+                    </p>
+                </EditableLink>
+                <div>
+                    <MapsIconButton
+                        onClick={() => {
+                            openMapLinkInNewTab(eventDetails.addressMapLink);
+                        }}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Address;

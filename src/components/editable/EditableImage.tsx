@@ -25,6 +25,7 @@ type EditableImageProps = {
         index?: number,
     ) => Promise<void>;
     children: React.ReactNode;
+    iconClassName?: string;
 };
 
 const EditableImage: React.FC<EditableImageProps> = ({
@@ -35,6 +36,7 @@ const EditableImage: React.FC<EditableImageProps> = ({
     imageCaption = null,
     label = "Edit Image",
     children,
+    iconClassName,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { isLoggedIn } = useWedding();
@@ -85,7 +87,7 @@ const EditableImage: React.FC<EditableImageProps> = ({
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="absolute bg-white hover:bg-gray-300 rounded-sm bottom-2 right-2 z-50 opacity-100 transition-opacity p-1 h-6 w-6"
+                        className={`absolute bg-white hover:bg-gray-300 rounded-sm bottom-2 right-2 z-50 opacity-100 transition-opacity p-1 h-6 w-6 ${iconClassName}`}
                         aria-label="Edit Image"
                     >
                         ✏️

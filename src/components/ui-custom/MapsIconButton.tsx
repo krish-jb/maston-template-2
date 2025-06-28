@@ -4,8 +4,12 @@ import { useWedding } from "@/contexts/WeddingContext";
 
 interface MapsIconButtonProps {
     onClick?: () => void;
+    className?: string;
 }
-const MapsIconButton: React.FC<MapsIconButtonProps> = ({ onClick }) => {
+const MapsIconButton: React.FC<MapsIconButtonProps> = ({
+    onClick,
+    className,
+}) => {
     const { isLoggedIn } = useWedding();
     const [hovered, setIsHovered] = useState<boolean>(false);
     const [color, setColor] = useState("white");
@@ -15,11 +19,12 @@ const MapsIconButton: React.FC<MapsIconButtonProps> = ({ onClick }) => {
     }, [hovered]);
 
     if (isLoggedIn) {
-        return <></>;
+        return;
     }
+
     return (
         <button
-            className={`w-8 p-1 border-2 border-gray-200 rounded-md ${hovered ? "bg-gray-200" : "bg-white"}`}
+            className={`w-8 p-1 border-2 border-gray-200 rounded-md ${hovered ? "bg-gray-200" : "bg-white"} ${className}`}
             type="button"
             onClick={onClick}
             onMouseOver={() => setIsHovered(true)}

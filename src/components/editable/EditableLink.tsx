@@ -36,7 +36,6 @@ const EditableLink: React.FC<EditableLinkProps> = ({
     const { isLoggedIn } = useWedding();
     const editTextInputId = useId();
     const editLinkInputId = useId();
-    const hoverLinkColor = "#ff637e";
 
     const handleSave = () => {
         onSave(editText, editLink);
@@ -69,7 +68,7 @@ const EditableLink: React.FC<EditableLinkProps> = ({
     const editableClassName = cn(
         "text-left w-full underline",
         isLoggedIn
-            ? `${className} cursor-pointer bg-red-100 hover:bg-red-200 border border-red-300 rounded px-2 py-1 transition-colors`
+            ? `cursor-pointer bg-red-100 hover:bg-red-200 border border-red-300 rounded px-2 py-1 transition-colors`
             : className,
     );
 
@@ -77,7 +76,7 @@ const EditableLink: React.FC<EditableLinkProps> = ({
         return (
             <button
                 onClick={goToMaps}
-                className={`px-1 text-pink-600 shadow-[inset_0_0_0_0_${hoverLinkColor}] transition-all duration-300 ease-in-out hover:text-white italic hover:shadow-[inset_50rem_0_0_0_${hoverLinkColor}] text-left underline md:max-w-full max-w-56 truncate ${className}`}
+                className={`px-1 text-pink-600 shadow-[inset_0_0_0_0_#ff637e] transition-all duration-300 ease-in-out hover:text-white italic hover:shadow-[inset_50rem_0_0_0_#ff637e] text-left underline md:max-w-full ${className}`}
                 type="button"
             >
                 {text}
