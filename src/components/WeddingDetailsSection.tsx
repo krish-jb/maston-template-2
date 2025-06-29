@@ -31,7 +31,7 @@ export const WeddingDetailsSection: React.FC = () => {
             <div className="container mx-auto px-4">
                 <FadeIn delay={50}>
                     <div className="m-auto text-center mb-8">
-                        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">
+                        <h2 className="font-Arima text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">
                             Wedding Details
                         </h2>
                         <p className="text-md md:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -55,6 +55,7 @@ export const WeddingDetailsSection: React.FC = () => {
                                             value,
                                         )
                                     }
+                                    className="font-Arima"
                                 >
                                     <CardTitle className="text-pink-600">
                                         {
@@ -64,41 +65,54 @@ export const WeddingDetailsSection: React.FC = () => {
                                     </CardTitle>
                                 </EditableText>
                             </CardHeader>
-                            <CardContent className="space-y-2">
-                                <EditableText
-                                    value={
-                                        weddingData.weddingDetails.event1.date
-                                    }
-                                    onSave={(value) =>
-                                        updateEventDetails(
-                                            "event1",
-                                            "date",
-                                            value,
-                                        )
-                                    }
-                                >
-                                    <p>
-                                        <strong>Date:</strong>{" "}
-                                        {weddingData.weddingDetails.event1.date}
-                                    </p>
-                                </EditableText>
-                                <EditableText
-                                    value={
-                                        weddingData.weddingDetails.event1.time
-                                    }
-                                    onSave={(value) =>
-                                        updateEventDetails(
-                                            "event1",
-                                            "time",
-                                            value,
-                                        )
-                                    }
-                                >
-                                    <p>
-                                        <strong>Time:</strong>{" "}
-                                        {weddingData.weddingDetails.event1.time}
-                                    </p>
-                                </EditableText>
+                            <CardContent className="space-y-1">
+                                <div>
+                                    <EditableText
+                                        value={
+                                            weddingData.weddingDetails.event1
+                                                .date
+                                        }
+                                        onSave={(value) =>
+                                            updateEventDetails(
+                                                "event1",
+                                                "date",
+                                                value,
+                                            )
+                                        }
+                                    >
+                                        <p>
+                                            <span className="text-sm text-muted-foreground">
+                                                Date & Time
+                                            </span>
+                                        </p>
+                                        <p className="font-semibold">
+                                            {
+                                                weddingData.weddingDetails
+                                                    .event1.date
+                                            }
+                                        </p>
+                                    </EditableText>
+                                    <EditableText
+                                        value={
+                                            weddingData.weddingDetails.event1
+                                                .time
+                                        }
+                                        onSave={(value) =>
+                                            updateEventDetails(
+                                                "event1",
+                                                "time",
+                                                value,
+                                            )
+                                        }
+                                    >
+                                        <p className="font-semibold">
+                                            {
+                                                weddingData.weddingDetails
+                                                    .event1.time
+                                            }
+                                        </p>
+                                    </EditableText>
+                                </div>
                                 <EditableText
                                     value={
                                         weddingData.weddingDetails.event1.venue
@@ -113,7 +127,11 @@ export const WeddingDetailsSection: React.FC = () => {
                                     className="max-w-sm md:max-w-full"
                                 >
                                     <p>
-                                        <strong>Venue:</strong>{" "}
+                                        <span className="text-sm text-muted-foreground">
+                                            Venue
+                                        </span>
+                                    </p>
+                                    <p className="font-semibold">
                                         {
                                             weddingData.weddingDetails.event1
                                                 .venue
@@ -145,6 +163,7 @@ export const WeddingDetailsSection: React.FC = () => {
                                             value,
                                         )
                                     }
+                                    className="font-Arima"
                                 >
                                     <CardTitle className="text-pink-600">
                                         {
@@ -155,40 +174,53 @@ export const WeddingDetailsSection: React.FC = () => {
                                 </EditableText>
                             </CardHeader>
                             <CardContent className="space-y-2">
-                                <EditableText
-                                    value={
-                                        weddingData.weddingDetails.event2.date
-                                    }
-                                    onSave={(value) =>
-                                        updateEventDetails(
-                                            "event2",
-                                            "date",
-                                            value,
-                                        )
-                                    }
-                                >
-                                    <p>
-                                        <strong>Date:</strong>{" "}
-                                        {weddingData.weddingDetails.event2.date}
-                                    </p>
-                                </EditableText>
-                                <EditableText
-                                    value={
-                                        weddingData.weddingDetails.event2.time
-                                    }
-                                    onSave={(value) =>
-                                        updateEventDetails(
-                                            "event2",
-                                            "time",
-                                            value,
-                                        )
-                                    }
-                                >
-                                    <p>
-                                        <strong>Time:</strong>{" "}
-                                        {weddingData.weddingDetails.event2.time}
-                                    </p>
-                                </EditableText>
+                                <div>
+                                    <EditableText
+                                        value={
+                                            weddingData.weddingDetails.event2
+                                                .date
+                                        }
+                                        onSave={(value) =>
+                                            updateEventDetails(
+                                                "event2",
+                                                "date",
+                                                value,
+                                            )
+                                        }
+                                    >
+                                        <p>
+                                            <span className="text-sm text-muted-foreground">
+                                                Date & Time
+                                            </span>
+                                        </p>
+                                        <p className="font-semibold">
+                                            {
+                                                weddingData.weddingDetails
+                                                    .event2.date
+                                            }
+                                        </p>
+                                    </EditableText>
+                                    <EditableText
+                                        value={
+                                            weddingData.weddingDetails.event2
+                                                .time
+                                        }
+                                        onSave={(value) =>
+                                            updateEventDetails(
+                                                "event2",
+                                                "time",
+                                                value,
+                                            )
+                                        }
+                                    >
+                                        <p className="font-semibold">
+                                            {
+                                                weddingData.weddingDetails
+                                                    .event2.time
+                                            }
+                                        </p>
+                                    </EditableText>
+                                </div>
                                 <EditableText
                                     value={
                                         weddingData.weddingDetails.event2.venue
@@ -202,7 +234,11 @@ export const WeddingDetailsSection: React.FC = () => {
                                     }
                                 >
                                     <p>
-                                        <strong>Venue:</strong>{" "}
+                                        <span className="text-sm text-muted-foreground">
+                                            Venue
+                                        </span>
+                                    </p>
+                                    <p className="font-semibold">
                                         {
                                             weddingData.weddingDetails.event2
                                                 .venue
@@ -236,6 +272,7 @@ export const WeddingDetailsSection: React.FC = () => {
                                             value,
                                         )
                                     }
+                                    className="font-Arima"
                                 >
                                     <CardTitle className="text-gray-800">
                                         {
@@ -284,6 +321,7 @@ export const WeddingDetailsSection: React.FC = () => {
                                             value,
                                         )
                                     }
+                                    className="font-Arima"
                                 >
                                     <CardTitle className="text-gray-800">
                                         {
@@ -333,6 +371,7 @@ export const WeddingDetailsSection: React.FC = () => {
                                             value,
                                         )
                                     }
+                                    className="font-Arima"
                                 >
                                     <CardTitle className="text-gray-800">
                                         {

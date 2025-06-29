@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input.tsx";
 import { Label } from "@/components/ui/label.tsx";
 import { useWedding } from "@/contexts/WeddingContext";
 import { cn } from "@/lib/utils";
+import "@/styles/linkStyle.css";
 
 interface EditableLinkProps {
     text: string;
@@ -61,10 +62,6 @@ const EditableLink: React.FC<EditableLinkProps> = ({
         console.log(link);
     };
 
-    const goToMaps = () => {
-        window.open(link, "_blank");
-    };
-
     const editableClassName = cn(
         "text-left w-full underline",
         isLoggedIn
@@ -74,13 +71,14 @@ const EditableLink: React.FC<EditableLinkProps> = ({
 
     if (!isLoggedIn) {
         return (
-            <button
-                onClick={goToMaps}
-                className={`px-1 text-pink-600 shadow-[inset_0_0_0_0_#ff637e] transition-all duration-300 ease-in-out hover:text-white italic hover:shadow-[inset_50rem_0_0_0_#ff637e] text-left underline md:max-w-full ${className}`}
-                type="button"
+            <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`px-1 text-pink-600 transition-all duration-300 ease-in-out italic text-left md:max-w-full ${className}`}
             >
                 {text}
-            </button>
+            </a>
         );
     }
 

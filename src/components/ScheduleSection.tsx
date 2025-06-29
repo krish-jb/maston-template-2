@@ -44,10 +44,10 @@ export const ScheduleSection: React.FC = () => {
         <section id="schedule" className="py-20 bg-white">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                    <h2 className="font-Arima text-3xl md:text-4xl font-bold text-gray-800 mb-4">
                         Wedding Schedule
                     </h2>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <p className="md:text-lg text-md text-muted-foreground max-w-2xl mx-auto">
                         Here's how our special day will unfold
                     </p>
                     {isLoggedIn && (
@@ -102,6 +102,7 @@ export const ScheduleSection: React.FC = () => {
                                                         value,
                                                     )
                                                 }
+                                                className="font-Arima"
                                             >
                                                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
                                                     {item.event}

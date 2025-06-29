@@ -28,10 +28,7 @@ export const StorySection: React.FC = () => {
     };
 
     return (
-        <section
-            id="story"
-            className="py-20 bg-gradient-to-br from-pink-50 to-white"
-        >
+        <section id="story" className="py-20 bg-white">
             <div className="container mx-auto px-4">
                 <div className="max-w-4xl mx-auto text-center">
                     <span className="text-sm text-muted-foreground md:text-base font-medium mb-2 inline-block">
@@ -42,7 +39,7 @@ export const StorySection: React.FC = () => {
                         onSave={updateTitle}
                         className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 block"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8">
+                        <h2 className="font-Arima text-3xl md:text-4xl font-bold text-gray-800 mb-8">
                             {weddingData.story.title}
                         </h2>
                     </EditableText>

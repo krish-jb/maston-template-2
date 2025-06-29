@@ -94,6 +94,7 @@ export default {
             },
             fontFamily: {
                 Pacifico: ["Pacifico", "sans-serif"],
+                Arima: ["Arima", "sans-serif"],
             },
         },
     },

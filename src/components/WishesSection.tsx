@@ -62,9 +62,14 @@ export const WishesSection: React.FC = () => {
         <section id="wishes" className="py-20 bg-white">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                        Wedding Wishes
-                    </h2>
+                    <div className="mb-10">
+                        <h2 className="font-Arima text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                            Wedding Wishes
+                        </h2>
+                        <p className="text-md md:text-lg text-muted-foreground max-w-2xl mx-auto">
+                            Beautiful messages from our loved ones
+                        </p>
+                    </div>
                     <div className="space-x-4">
                         <Dialog open={isOpen} onOpenChange={setIsOpen}>
                             <DialogTrigger asChild>

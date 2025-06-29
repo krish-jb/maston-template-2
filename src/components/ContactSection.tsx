@@ -7,7 +7,7 @@ import MapsIconButton from "./ui-custom/MapsIconButton";
 import FadeIn from "./animations/FadeIn";
 
 export const ContactSection: React.FC = () => {
-    const { weddingData, updateWeddingData, isLoggedIn } = useWedding();
+    const { weddingData, updateWeddingData } = useWedding();
 
     const updateContact = (
         field: "phone" | "email" | "address",
@@ -21,7 +21,7 @@ export const ContactSection: React.FC = () => {
     return (
         <section id="contact" className="py-20 bg-white">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+                <h2 className="font-Arima text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
                     Contact Us
                 </h2>
 
@@ -29,15 +29,15 @@ export const ContactSection: React.FC = () => {
                     <FadeIn>
                         <Card>
                             <CardHeader>
-                                <CardTitle className="text-center text-pink-600">
+                                <CardTitle className="font-Arima text-center text-pink-600">
                                     Get in Touch
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div>
-                                    <strong className="text-gray-800">
-                                        Phone:
-                                    </strong>
+                                    <span className="text-md text-muted-foreground">
+                                        Phone
+                                    </span>
                                     <EditableText
                                         value={weddingData.contact.phone}
                                         onSave={(value) =>
@@ -52,9 +52,9 @@ export const ContactSection: React.FC = () => {
                                 </div>
 
                                 <div>
-                                    <strong className="text-gray-800">
-                                        Email:
-                                    </strong>
+                                    <span className="text-md text-muted-foreground">
+                                        Email
+                                    </span>
                                     <EditableText
                                         value={weddingData.contact.email}
                                         onSave={(value) =>
@@ -70,9 +70,9 @@ export const ContactSection: React.FC = () => {
 
                                 <div>
                                     <p>
-                                        <strong className="text-gray-800">
-                                            Address:
-                                        </strong>
+                                        <span className="text-md text-muted-foreground">
+                                            Address
+                                        </span>
                                     </p>
                                     <div className="flex justify-between">
                                         <EditableLink

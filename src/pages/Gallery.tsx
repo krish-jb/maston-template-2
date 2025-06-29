@@ -77,9 +77,16 @@ const Gallery = () => {
             <Header />
             <section id="galleryPage" className="py-20 bg-gray-50">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
-                        Gallery
-                    </h2>
+                    <FadeIn delay={50}>
+                        <div className="m-auto text-center mb-8">
+                            <h2 className="font-Arima text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">
+                                Gallery
+                            </h2>
+                            <p className="md:text-lg text-md text-muted-foreground max-w-2xl mx-auto">
+                                Moments captured through our journey together
+                            </p>
+                        </div>
+                    </FadeIn>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {weddingData.gallery

@@ -34,17 +34,11 @@ const Address: React.FC<AddressProps> = ({ event, eventDetails }) => {
     };
 
     return (
-        <div className="w-full inline-flex">
-            {!isLoggedIn && (
-                <p className="">
-                    <strong>Address:</strong>
-                </p>
-            )}
-            <div
-                className={
-                    isLoggedIn ? "w-full" : "w-full inline-flex justify-between"
-                }
-            >
+        <div className="w-full">
+            <p>
+                <span className="text-sm text-muted-foreground">Address</span>
+            </p>
+            <div className="flex justify-between">
                 <EditableLink
                     text={eventDetails.address}
                     link={eventDetails.addressMapLink}
@@ -52,11 +46,8 @@ const Address: React.FC<AddressProps> = ({ event, eventDetails }) => {
                         updateEventAddress(event, text, link)
                     }
                     label={`Edit ${eventDetails.title} Address`}
-                    className="flex items-startem"
                 >
-                    <p>
-                        <strong>Address:</strong> {eventDetails.address}
-                    </p>
+                    <p>{eventDetails.address}</p>
                 </EditableLink>
                 <div>
                     <MapsIconButton

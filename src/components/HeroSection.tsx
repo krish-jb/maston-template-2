@@ -3,6 +3,7 @@ import { useWedding } from "@/contexts/WeddingContext";
 import uploadImage from "@/utils/UploadImage";
 import { EditableText } from "./EditableText";
 import EditableImage from "./editable/EditableImage";
+import { Quote } from "lucide-react";
 
 export const HeroSection: React.FC = () => {
     const { weddingData, updateWeddingData, user } = useWedding();
@@ -57,10 +58,10 @@ export const HeroSection: React.FC = () => {
                         value={weddingData.couple.weddingQuote}
                         onSave={updateQuote}
                         multiline
-                        className="font-Pacifico text-2xl md:text-5xl font-bold text-pink-300 italic leading-relaxed"
+                        className="font-Pacifico text-2xl md:text-5xl font-bold text-white italic leading-relaxed"
                     >
-                        <p className="font-Mogra text-2xl md:text-5xl font-bold text-pink-300 italic leading-relaxed">
-                            "{weddingData.couple.weddingQuote}"
+                        <p className="font-Arima font-normal text-2xl md:text-5xl text-white italic leading-relaxed capitalize">
+                            {weddingData.couple.weddingQuote}.
                         </p>
                     </EditableText>
                 </div>
@@ -69,23 +70,23 @@ export const HeroSection: React.FC = () => {
                     <EditableText
                         value={weddingData.couple.groomName}
                         onSave={updateGroomName}
-                        className="text-4xl md:text-6xl font-bold text-pink-600 block"
+                        className="text-4xl md:text-6xl font-light text-white block "
                     >
-                        <h1 className="text-4xl md:text-6xl font-bold text-pink-600">
+                        <h1 className="text-4xl md:text-6xl font-Pacifico text-white ">
                             {weddingData.couple.groomName}
                         </h1>
                     </EditableText>
 
-                    <div className="text-3xl md:text-5xl text-gray-400 font-light">
+                    <div className="text-3xl md:text-5xl text-pink-600 font-normal">
                         &
                     </div>
 
                     <EditableText
                         value={weddingData.couple.brideName}
                         onSave={updateBrideName}
-                        className="text-4xl md:text-6xl font-bold text-pink-600 block"
+                        className="text-4xl md:text-6xl font-light text-white block"
                     >
-                        <h1 className="text-4xl md:text-6xl font-bold text-pink-600">
+                        <h1 className="text-4xl md:text-6xl font-Pacifico text-white">
                             {weddingData.couple.brideName}
                         </h1>
                     </EditableText>
