@@ -5,6 +5,7 @@ import FadeIn from "@/components/animations/FadeIn";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWedding } from "@/contexts/WeddingContext";
+import { Header } from "@/components/Header";
 
 const AllWishes: React.FC = () => {
     const { weddingWishes, loadAllWeddingWishes } = useWedding();
@@ -16,14 +17,15 @@ const AllWishes: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 py-20">
+            <Header />
             <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-gray-800 mb-4">
-                        All Wedding Wishes
-                    </h1>
-                    <Button onClick={() => navigate("/")} variant="outline">
-                        Back to Website
-                    </Button>
+                <div className="text-center mb-10">
+                    <h2 className="font-Arima text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+                        Wedding Wishes
+                    </h2>
+                    <p className="text-md md:text-lg text-muted-foreground max-w-2xl mx-auto">
+                        Beautiful messages from our loved ones
+                    </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">

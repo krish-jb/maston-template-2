@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useWedding } from "@/contexts/WeddingContext";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import scrollToElement from "@/utils/ScrollToElement";
 
 export const Header: React.FC = () => {
     const { isLoggedIn, logout, weddingData } = useWedding();
@@ -29,17 +30,14 @@ export const Header: React.FC = () => {
     }, [isScrolled]);
 
     const scrollToSection = (sectionId: string) => {
-        if (location.pathname !== "/") {
-            navigate("/");
-            return;
-        }
         if (isMobileMenuOpen) {
             setIsMobileMenuOpen(false);
         }
-        const element = document.getElementById(sectionId);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
+        if (location.pathname !== "/") {
+            navigate("/", { state: { scrollTo: sectionId } });
+            return;
         }
+        scrollToElement(sectionId);
     };
 
     const handleLogout = () => {

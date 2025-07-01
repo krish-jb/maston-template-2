@@ -12,9 +12,21 @@ import { WeddingDetailsSection } from "@/components/WeddingDetailsSection";
 import { WishesSection } from "@/components/WishesSection";
 import { useWedding } from "@/contexts/WeddingContext";
 import Footer from "@/components/Footer";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import scrollToElement from "@/utils/ScrollToElement";
 
 const Index: React.FC = () => {
     const { globalIsLoading } = useWedding();
+    const location = useLocation();
+
+    useEffect(() => {
+        const scrollTo = location.state?.scrollTo;
+        if (scrollTo) {
+            scrollToElement(scrollTo);
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state]);
 
     if (globalIsLoading) {
         return <Loading />;

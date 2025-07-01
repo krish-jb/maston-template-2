@@ -93,7 +93,7 @@ const Gallery = () => {
                             .slice(0, limit)
                             .map((photo, index) => (
                                 <FadeIn
-                                    delay={50 * (index + 1)}
+                                    delay={100 * (index + 1)}
                                     key={`fade-${photo.id}`}
                                 >
                                     <div
