@@ -1,5 +1,8 @@
 import type React from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { ContactSection } from "@/components/ContactSection";
+import Footer from "@/components/Footer";
 import { GallerySection } from "@/components/GallerySection";
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
@@ -11,9 +14,6 @@ import { StorySection } from "@/components/StorySection";
 import { WeddingDetailsSection } from "@/components/WeddingDetailsSection";
 import { WishesSection } from "@/components/WishesSection";
 import { useWedding } from "@/contexts/WeddingContext";
-import Footer from "@/components/Footer";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import scrollToElement from "@/utils/ScrollToElement";
 
 const Index: React.FC = () => {

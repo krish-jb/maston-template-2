@@ -1,8 +1,8 @@
-a {
+.cus-link {
     position: relative;
 }
 
-a::before {
+.cus-link::before {
     content: "";
     position: absolute;
     width: 100%;
@@ -16,7 +16,7 @@ a::before {
     transition: transform 0.3s ease-in-out;
 }
 
-a:hover::before {
+.cus-link:hover::before {
     transform-origin: left;
     transform: scaleX(1);
 }

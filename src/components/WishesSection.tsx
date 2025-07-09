@@ -35,8 +35,6 @@ export const WishesSection: React.FC = () => {
             message: wishMessage,
         };
 
-        console.log(newWish);
-
         const originalWishes = structuredClone(weddingWishes);
 
         const tempWeddingWishes = structuredClone(weddingWishes);

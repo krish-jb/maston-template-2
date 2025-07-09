@@ -2,10 +2,10 @@ import type React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FadeIn from "@/components/animations/FadeIn";
+import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWedding } from "@/contexts/WeddingContext";
-import { Header } from "@/components/Header";
 
 const AllWishes: React.FC = () => {
     const { weddingWishes, loadAllWeddingWishes } = useWedding();

@@ -75,7 +75,7 @@ const EditableLink: React.FC<EditableLinkProps> = ({
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`px-1 text-pink-600 transition-all duration-300 ease-in-out italic text-left md:max-w-full ${className}`}
+                className={`px-1 text-pink-600 transition-all duration-300 ease-in-out italic text-left md:max-w-full cus-link ${className}`}
             >
                 {text}
             </a>

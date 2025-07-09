@@ -51,22 +51,28 @@ export const Header: React.FC = () => {
             className={cn(
                 "fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm z-50 transition-all duration-300",
                 isScrolled
-                    ? "py-3 bg-white border-b border-gray-200/20 shadow-sm"
-                    : "py-5 bg-transparent",
+                    ? "py-4 bg-white border-b border-gray-200/20 shadow-sm"
+                    : "py-3 bg-transparent",
             )}
         >
             <nav className="flex container mx-auto px-4 md:px-6 items-center justify-between">
                 <Link
                     to="/"
                     className={cn(
-                        "flex flex-row gap-2 text-xl font-Pacifico",
+                        "text-xl font-Pacifico",
                         isScrolled ? "text-pink-500" : "text-black",
                     )}
                 >
-                    <HeartIcon color={loveColor} width={25} />
-                    {weddingData.couple.groomName[0]} &{" "}
-                    {weddingData.couple.brideName[0]} Wedding
-                    <HeartIcon color={loveColor} width={25} />
+                    <button
+                        onClick={() => scrollToSection("hero")}
+                        className="flex flex-row gap-2"
+                        type="button"
+                    >
+                        <HeartIcon color={loveColor} width={25} />
+                        {weddingData.couple.groomName[0]} &{" "}
+                        {weddingData.couple.brideName[0]} Wedding
+                        <HeartIcon color={loveColor} width={25} />
+                    </button>
                 </Link>
 
                 <div className="hidden md:flex space-x-6 font-light">
@@ -167,7 +173,7 @@ export const Header: React.FC = () => {
                 <nav className="flex flex-col space-y-6 text-lg bg-white font-light">
                     <button
                         className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("home")}
+                        onClick={() => scrollToSection("hero")}
                         type="button"
                     >
                         Home
@@ -181,7 +187,7 @@ export const Header: React.FC = () => {
                     </button>
                     <button
                         className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("wedding-details")}
+                        onClick={() => scrollToSection("details")}
                         type="button"
                     >
                         Details
@@ -202,14 +208,14 @@ export const Header: React.FC = () => {
                     </button>
                     <button
                         className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("schedule")}
+                        onClick={() => scrollToSection("wishes")}
                         type="button"
                     >
                         Wishes
                     </button>
                     <button
                         className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("gallery")}
+                        onClick={() => scrollToSection("contact")}
                         type="button"
                     >
                         Contact
