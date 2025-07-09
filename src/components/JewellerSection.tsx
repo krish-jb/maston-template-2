@@ -11,18 +11,18 @@ export const JewellerSection: React.FC = () => {
         <section className="py-20 bg-gray-50">
             <FadeIn delay={100}>
                 <div className="container mx-auto px-4">
-                    <div className="max-w-4xl mx-auto text-center">
+                    <div className="max-w-4xl flex flex-col items-center text-center mx-auto">
                         <h2 className="font-Arima  text-3xl md:text-4xl font-bold text-gray-800 mb-4">
                             {weddingData.jeweller.title}
                         </h2>
-                        <div className="flex flex-col w-full rounded-md overflow-hidden">
+                        <div className="flex flex-col justify-center items-center w-full rounded-md overflow-hidden max-w-2xl">
                             <img
                                 src="/jewellery/ad-1.jpg"
                                 alt="Edimannickal Gold and Diamonds ad"
                             />
                             <Card className="bg-white/80 backdrop-blur-sm">
                                 <CardHeader>
-                                    <CardTitle className="text-2xl text-yellow-700">
+                                    <CardTitle className="text-2xl text-yellow-700 font-Arima">
                                         {weddingData.jeweller.shopName}
                                     </CardTitle>
                                 </CardHeader>
