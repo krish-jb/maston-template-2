@@ -1,5 +1,5 @@
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FadeIn from "@/components/animations/FadeIn";
 import DeletableItem from "@/components/editable/DeletableItem";
 import EditableImage from "@/components/editable/EditableImage";
@@ -33,6 +33,10 @@ const Gallery = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [image, setImage] = useState<File | null>(null);
     const limit: number = import.meta.env.VITE_GALLERY_IMAGE_LIMIT || 10;
+
+    useEffect(() => {
+        window.scroll(0, 0);
+    }, []);
 
     const handleDelete = async (name: string, indexToRemove: number) => {
         setIsLoading(true);
