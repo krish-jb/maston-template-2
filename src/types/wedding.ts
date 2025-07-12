@@ -27,6 +27,7 @@ export interface WeddingData {
         id: string;
         url: string;
         caption: string;
+        name: string;
     }>;
     moreInfo: {
         title: string;

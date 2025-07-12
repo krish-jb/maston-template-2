@@ -35,7 +35,7 @@ const Gallery = () => {
     const limit: number = import.meta.env.VITE_GALLERY_IMAGE_LIMIT || 10;
 
     useEffect(() => {
-        window.scroll(0, 0);
+        window.scrollTo(0, 0);
     }, []);
 
     const handleDelete = async (name: string, indexToRemove: number) => {
@@ -106,10 +106,7 @@ const Gallery = () => {
                                     >
                                         <DeletableItem
                                             onDelete={() => {
-                                                handleDelete(
-                                                    `gallery_image_${index}`,
-                                                    index,
-                                                );
+                                                handleDelete(image.name, index);
                                             }}
                                             key={`delete-${photo.id}`}
                                         >
