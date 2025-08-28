@@ -1,6 +1,6 @@
 import { HeartIcon } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useWedding } from "@/contexts/WeddingContext";
@@ -9,48 +9,165 @@ import { cn } from "@/lib/utils";
 import scrollToElement from "@/utils/ScrollToElement";
 
 export const Header: React.FC = () => {
-    const { isLoggedIn, logout, weddingData } = useWedding();
-    const [loveColor, setLoveColor] = useState<string>("black");
-    const [isScrolled, setIsScrolled] = useState<boolean>(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-    const { toast } = useToast();
+
+    const { weddingData, isLoggedIn, logout, user } = useWedding();
     const navigate = useNavigate();
+    const [activeSection, setActiveSection] = useState("hero");
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+    const [headerPosition, setHeaderPosition] = useState("-translate-y-full");
+    const [itemColor, setItemColor] = useState<
+        "text-gray-600" | "text-wedding-cream"
+    >("text-gray-600");
+
+    const sections = useMemo(
+        () => [
+            { id: "hero", label: "Home", disabled: false },
+            {
+                id: "story",
+                label: "Our Story",
+                disabled: weddingData?.story?.disabled,
+            },
+            {
+                id: "details",
+                label: "Details",
+                disabled: weddingData?.weddingDetails?.disabled,
+            },
+            { id: "schedule", label: "Schedule", disabled: false },
+            { id: "gallery", label: "Gallery", disabled: false },
+            {
+                id: "wishes",
+                label: "Wishes",
+                disabled: weddingData?.wishDisabled,
+            },
+            {
+                id: "contact",
+                label: "Contact",
+                disabled: weddingData?.contact?.disabled,
+            },
+            { id: "info", label: "Info", disabled: true },
+            {
+                id: "jewellery",
+                label: "Jewellery",
+                disabled: weddingData?.jeweller?.disabled,
+            },
+        ],
+        [
+            weddingData?.story?.disabled,
+            weddingData?.weddingDetails?.disabled,
+            weddingData?.wishDisabled,
+            weddingData?.contact?.disabled,
+            weddingData?.jeweller?.disabled,
+        ],
+    );
+
+    const mainObserver = useRef<IntersectionObserver | null>(null);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10);
+        const options = {
+            root: null,
+            rootMargin: "0px 0px -50% 0px",
+            threshold: 0.3,
         };
 
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        mainObserver.current = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        }, options);
+
+        sections.forEach(({ id }) => {
+            const element = document.getElementById(id);
+            if (element) {
+                mainObserver.current?.observe(element);
+            }
+        });
+
+        return () => {
+            if (mainObserver.current) mainObserver.current.disconnect();
+        };
+    }, [sections]);
+
+    const headerVisibilityObserver = useRef<IntersectionObserver | null>(null);
+
+    useEffect(() => {
+        const sentinel = document.getElementById("top-sentinal");
+        const header = document.getElementById("header");
+
+        if (!sentinel || !header) return;
+
+        const options = {
+            root: null,
+            threshold: 0,
+        };
+
+        headerVisibilityObserver.current = new IntersectionObserver(
+            ([entry]) => {
+                if (!entry.isIntersecting) {
+                    setHeaderPosition("translate-y-0");
+                } else {
+                    setHeaderPosition("-translate-y-full");
+                }
+            },
+            options,
+        );
+
+        headerVisibilityObserver.current.observe(sentinel);
+
+        return () => {
+            if (headerVisibilityObserver.current)
+                headerVisibilityObserver.current.disconnect();
+        };
     }, []);
 
     useEffect(() => {
-        setLoveColor(isScrolled ? "#DB2777" : "black");
-    }, [isScrolled]);
+        setItemColor(
+            activeSection === "details" || activeSection === "wishes"
+                ? "text-wedding-cream"
+                : "text-gray-600",
+        );
+    }, [activeSection]);
 
-    const scrollToSection = (sectionId: string) => {
-        if (isMobileMenuOpen) {
-            setIsMobileMenuOpen(false);
-        }
-        if (location.pathname !== "/") {
-            navigate("/", { state: { scrollTo: sectionId } });
+    const scrollToSection = useCallback((sectionId: string) => {
+        const element = document.getElementById(sectionId);
+        
+        // If element exists on current page, scroll to it
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+            setSidebarOpen(false);
             return;
         }
-        scrollToElement(sectionId);
-    };
+        
+        // If element doesn't exist, navigate to main page first
+        if (user?.username) {
+            // Navigate to main page with the section hash
+            navigate(`/${user.username}`);
+            
+            // Wait for navigation to complete, then scroll to section
+            setTimeout(() => {
+                const targetElement = document.getElementById(sectionId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: "smooth" });
+                }
+            }, 100);
+        }
+        
+        setSidebarOpen(false);
+    }, [navigate, user?.username])
 
-    const handleLogout = () => {
-        logout();
-        setIsMobileMenuOpen(false);
-        toast({ title: "You have logged out!" });
-    };
+    const toggleSidebar = useCallback(
+        () => setSidebarOpen((prev) => !prev),
+        [],
+    );
 
+    const closeSidebar = useCallback(() => setSidebarOpen(false), []);
     return (
         <header
             className={cn(
                 "fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm z-50 transition-all duration-300",
-                isScrolled
+                headerPosition
                     ? "py-4 bg-white border-b border-gray-200/20 shadow-sm"
                     : "py-3 bg-transparent",
             )}
@@ -60,7 +177,7 @@ export const Header: React.FC = () => {
                     to="/"
                     className={cn(
                         "text-xl font-Pacifico",
-                        isScrolled ? "text-pink-500" : "text-black",
+                        headerPosition ? "text-pink-500" : "text-black",
                     )}
                 >
                     <button
@@ -68,10 +185,10 @@ export const Header: React.FC = () => {
                         className="flex flex-row gap-2"
                         type="button"
                     >
-                        <HeartIcon color={loveColor} width={25} />
+                        <HeartIcon color={itemColor} width={25} />
                         {weddingData.couple.groomName[0]} &{" "}
                         {weddingData.couple.brideName[0]} Wedding
-                        <HeartIcon color={loveColor} width={25} />
+                        <HeartIcon color={itemColor} width={25} />
                     </button>
                 </Link>
 
@@ -127,7 +244,7 @@ export const Header: React.FC = () => {
                     </button>
                     <div className="flex items-center space-x-4">
                         {isLoggedIn && (
-                            <Button onClick={handleLogout} variant="outline">
+                            <Button onClick={logout} variant="outline">
                                 Logout
                             </Button>
                         )}
@@ -223,7 +340,7 @@ export const Header: React.FC = () => {
                     {isLoggedIn && (
                         <button
                             className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                            onClick={handleLogout}
+                            onClick={logout}
                             type="button"
                         >
                             {isLoggedIn ? "Logout" : "Login"}

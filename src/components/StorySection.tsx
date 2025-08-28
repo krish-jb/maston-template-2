@@ -21,9 +21,9 @@ export const StorySection: React.FC = () => {
     };
 
     const updateStoryImage = async (file: File) => {
-        const imageUrl = await uploadImage(file, user, "story_image");
+        const imageData = await uploadImage(file, user, "story_image");
         updateWeddingData({
-            story: { ...weddingData.story, image: imageUrl },
+            story: { ...weddingData.story, image: imageData?.url || "" },
         });
     };
 

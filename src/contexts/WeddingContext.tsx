@@ -5,25 +5,28 @@ import {
     type SetStateAction,
     useContext,
 } from "react";
-import type { User, WeddingData, WeddingWishType } from "@/types/wedding";
+import type { User, WeddingData, WeddingWish } from "@/types/wedding";
 
 export interface WeddingContextType {
     weddingData: WeddingData;
-    weddingWishes: Array<WeddingWishType>;
-    setWeddingWishes: Dispatch<SetStateAction<Array<WeddingWishType>>>;
+    weddingWishes: Array<WeddingWish>;
+    setWeddingWishes: Dispatch<SetStateAction<Array<WeddingWish>>>;
     user: User | null;
+    setUser: Dispatch<SetStateAction<User | null>>;
     session: Session | null;
     isLoggedIn: boolean;
     globalIsLoading: boolean;
+    setGlobalIsLoading: Dispatch<SetStateAction<boolean>>;
     updateWeddingData: (data: Partial<WeddingData>) => Promise<boolean>;
     updateGalleryImage: (
         file: File | null,
         imageCaption: string | null,
         index: number,
+        oldImageName?: string,
     ) => Promise<void>;
     loadAllWeddingWishes: () => Promise<void>;
     saveData: (data: WeddingData) => Promise<boolean>;
-    addWish: (data: WeddingWishType) => Promise<void>;
+    addWish: (data: WeddingWish) => Promise<void>;
     login: (
         email: string,
         password: string,

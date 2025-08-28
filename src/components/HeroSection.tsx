@@ -27,15 +27,15 @@ export const HeroSection: React.FC = () => {
     };
 
     const updateHeroImage = async (file: File) => {
-        const imageUrl = await uploadImage(file, user, "hero_image");
+        const imageData = await uploadImage(file, user, "hero_image");
         updateWeddingData({
-            couple: { ...weddingData.couple, image: imageUrl },
+            couple: { ...weddingData.couple, image: imageData?.url || "" },
         });
     };
 
     return (
         <section
-            id="hero"
+            id={"hero"}
             className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 pt-20"
         >
             <EditableImage

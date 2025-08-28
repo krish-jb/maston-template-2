@@ -7,7 +7,7 @@ import { WeddingProvider } from "./contexts/WeddingProvider";
 import AllWishes from "./pages/AllWishes";
 import Gallery from "./pages/Gallery";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
+import LoginRoute from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,10 +20,13 @@ const App = () => (
             <BrowserRouter>
                 <WeddingProvider>
                     <Routes>
-                        <Route path="/" element={<Index />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/wishes" element={<AllWishes />} />
-                        <Route path="/gallery" element={<Gallery />} />
+                       <Route path="/login" element={<LoginRoute />} />
+                        <Route path="/wishes/:username" element={<AllWishes />} />
+                        <Route
+                            path="/gallery/:username"
+                            element={<Gallery />}
+                        />
+                        <Route path="/:username" element={<Index />} />
                         <Route path="*" element={<NotFound />} />
                     </Routes>
                 </WeddingProvider>

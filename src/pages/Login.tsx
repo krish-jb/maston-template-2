@@ -1,108 +1,20 @@
-import type React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useWedding } from "@/contexts/WeddingContext";
-import { useToast } from "@/hooks/use-toast";
+import { useSearchParams } from "react-router-dom";
+import Login from "@/components/login/Login";
+import LoginWithToken from "@/components/login/LoginWithJwt";
 
-const Login: React.FC = () => {
-    const [email, setEmail] = useState("user@gmail.com");
-    const [password, setPassword] = useState("password");
-    const [isLoading, setIsLoading] = useState(false);
+const LoginRoute = () => {
+    const [searchParams] = useSearchParams();
+    const access_token = searchParams.get("access_token");
+    const refresh_token = searchParams.get("refresh_token");
 
-    const { login } = useWedding();
-    const { toast } = useToast();
-    const navigate = useNavigate();
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
-
-        try {
-            const result = await login(email, password);
-
-            if (result.error) {
-                toast({
-                    title: "Error",
-                    description: result.error.message,
-                    variant: "destructive",
-                });
-            } else {
-                toast({
-                    title: "Success",
-                    description: "Logged in successfully!",
-                });
-                navigate("/");
-            }
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "An unexpected error occurred",
-                variant: "destructive",
-            });
-            console.log("Error logging in:", error.message);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 px-4">
-            <Card className="w-full max-w-md">
-                <CardHeader>
-                    <CardTitle className="text-center text-2xl text-pink-600">
-                        Admin Login
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={isLoading}
-                        >
-                            {isLoading ? "Loading..." : "Login"}
-                        </Button>
-
-                        <div className="text-center">
-                            <button
-                                type="button"
-                                onClick={() => navigate("/")}
-                                className="text-gray-600 hover:underline"
-                            >
-                                Back to Website
-                            </button>
-                        </div>
-                    </form>
-                </CardContent>
-            </Card>
-        </div>
+    return access_token && refresh_token ? (
+        <LoginWithToken
+            access_token={access_token}
+            refresh_token={refresh_token}
+        />
+    ) : (
+        <Login />
     );
 };
 
-export default Login;
+export default LoginRoute;

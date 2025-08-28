@@ -1,20 +1,29 @@
 import type React from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,useParams} from "react-router-dom";
 import FadeIn from "@/components/animations/FadeIn";
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useWedding } from "@/contexts/WeddingContext";
+import useSyncUsername from "@/hooks/useSyncUsername";
+import Loading from "@/components/Loading";
 
 const AllWishes: React.FC = () => {
-    const { weddingWishes, loadAllWeddingWishes } = useWedding();
+    const { globalIsLoading, weddingWishes, loadAllWeddingWishes } = useWedding();   
     const navigate = useNavigate();
+    const { username } = useParams();
 
+    useSyncUsername(username);
     useEffect(() => {
         loadAllWeddingWishes();
+        window.scrollTo(0, 0);
     }, [loadAllWeddingWishes]);
 
+    
+    if (globalIsLoading) {
+        return <Loading />;
+    }
     return (
         <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 py-20">
             <Header />

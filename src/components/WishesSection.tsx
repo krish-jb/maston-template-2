@@ -14,11 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useWedding } from "@/contexts/WeddingContext";
 import { useToast } from "@/hooks/use-toast";
-import type { WeddingWishType } from "@/types/wedding";
+import type { WeddingWish } from "@/types/wedding";
 import FadeIn from "./animations/FadeIn";
 
 export const WishesSection: React.FC = () => {
-    const { weddingWishes, addWish, setWeddingWishes } = useWedding();
+    const { weddingWishes,user, addWish, setWeddingWishes } = useWedding();
     const { toast } = useToast();
     const [isOpen, setIsOpen] = useState(false);
     const [guestName, setGuestName] = useState("");
@@ -29,7 +29,7 @@ export const WishesSection: React.FC = () => {
     const handleSubmitWish = async () => {
         setIsLoading(true);
         setIsOpen(false);
-        const newWish: WeddingWishType = {
+        const newWish: WeddingWish = {
             id: `${Date.now()}-${crypto.randomUUID()}`,
             name: guestName,
             message: wishMessage,
@@ -114,7 +114,7 @@ export const WishesSection: React.FC = () => {
                         </Dialog>
                         <Button
                             variant="outline"
-                            onClick={() => navigate("/wishes")}
+                            onClick={() => navigate(`/wishes/${user?.username}`)}
                         >
                             View All Wishes
                         </Button>
