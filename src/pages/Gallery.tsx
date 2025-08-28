@@ -1,5 +1,6 @@
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import FadeIn from "@/components/animations/FadeIn";
 import DeletableItem from "@/components/editable/DeletableItem";
 import EditableImage from "@/components/editable/EditableImage";
@@ -18,6 +19,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import ImageDropArea from "@/components/ui-custom/ImageDropArea";
+import useSyncUsername from "@/hooks/useSyncUsername";
+
 
 const Gallery = () => {
     const {
@@ -33,6 +36,9 @@ const Gallery = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [image, setImage] = useState<File | null>(null);
     const limit: number = import.meta.env.VITE_GALLERY_IMAGE_LIMIT || 10;
+    const { username } = useParams();
+
+    useSyncUsername(username);
 
     useEffect(() => {
         window.scrollTo(0, 0);

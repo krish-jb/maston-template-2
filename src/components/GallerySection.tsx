@@ -7,7 +7,7 @@ import EditableImage from "./editable/EditableImage";
 import { Button } from "./ui/button";
 
 export const GallerySection: React.FC = () => {
-    const { weddingData, updateGalleryImage } = useWedding();
+    const { weddingData,user, updateGalleryImage } = useWedding();
     const navigate = useNavigate();
 
     return (
@@ -65,7 +65,7 @@ export const GallerySection: React.FC = () => {
                 <div className="mt-8 mx-auto text-center">
                     <Button
                         variant="outline"
-                        onClick={() => navigate("/gallery")}
+                        onClick={() => navigate(`/gallery/${user?.username}`)}
                     >
                         View All Images
                     </Button>

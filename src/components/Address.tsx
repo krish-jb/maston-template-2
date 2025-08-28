@@ -1,12 +1,12 @@
 import { useWedding } from "@/contexts/WeddingContext";
-import type { EventDetails } from "@/types/wedding";
+import type { WeddingEvent }from "@/types/wedding";
 import confirmationMessage from "@/utils/ConfimationMessage";
 import EditableLink from "./editable/EditableLink";
 import MapsIconButton from "./ui-custom/MapsIconButton";
 
 interface AddressProps {
     event: "event1" | "event2";
-    eventDetails: EventDetails;
+    eventDetails: WeddingEvent;
 }
 
 const Address: React.FC<AddressProps> = ({ event, eventDetails }) => {

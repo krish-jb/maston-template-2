@@ -1,6 +1,6 @@
 import type React from "react";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { ContactSection } from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { GallerySection } from "@/components/GallerySection";
@@ -15,18 +15,13 @@ import { WeddingDetailsSection } from "@/components/WeddingDetailsSection";
 import { WishesSection } from "@/components/WishesSection";
 import { useWedding } from "@/contexts/WeddingContext";
 import scrollToElement from "@/utils/ScrollToElement";
+import useSyncUsername from "@/hooks/useSyncUsername";
 
 const Index: React.FC = () => {
     const { globalIsLoading } = useWedding();
-    const location = useLocation();
+    const { username } = useParams();
 
-    useEffect(() => {
-        const scrollTo = location.state?.scrollTo;
-        if (scrollTo) {
-            scrollToElement(scrollTo);
-            window.history.replaceState({}, document.title);
-        }
-    }, [location.state]);
+    useSyncUsername(username);
 
     if (globalIsLoading) {
         return <Loading />;
