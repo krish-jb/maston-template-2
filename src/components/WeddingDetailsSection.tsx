@@ -26,6 +26,9 @@ export const WeddingDetailsSection: React.FC = () => {
         if (success) confirmationMessage(field);
     };
 
+   if (weddingData.weddingDetails.disabled) {
+      return;
+   }
     return (
         <section id="details" className="py-20 bg-gray-50">
             <div className="container mx-auto px-4">

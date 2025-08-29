@@ -8,24 +8,86 @@ import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import scrollToElement from "@/utils/ScrollToElement";
 
+// Types
+interface Section {
+    id: string;
+    label: string;
+    disabled?: boolean;
+}
+
+interface NavigationButtonProps {
+    section: Section;
+    onClick: (sectionId: string) => void;
+    className?: string;
+    isMobile?: boolean;
+}
+
+// Navigation Button Component - eliminates repeated button code
+const NavigationButton: React.FC<NavigationButtonProps> = ({ 
+    section, 
+    onClick, 
+    className = "", 
+    isMobile = false 
+}) => {
+    const isDisabled = section.disabled || false;
+    
+    const buttonClasses = cn(
+        "transition-colors uppercase",
+        isMobile && "text-center border-b",
+        isDisabled 
+            ? "text-gray-400 cursor-not-allowed"
+            : "text-gray-700 hover:text-pink-600",
+        className
+    );
+
+    return (
+        <button
+            className={buttonClasses}
+            onClick={() => onClick(section.id)}
+            disabled={isDisabled}
+            type="button"
+        >
+            {section.label}
+        </button>
+    );
+};
+
+// Custom hook for IntersectionObserver management
+const useIntersectionObserver = (
+    callback: IntersectionObserverCallback,
+    options: IntersectionObserverInit,
+    dependencies: React.DependencyList = []
+) => {
+    const observerRef = useRef<IntersectionObserver | null>(null);
+
+    useEffect(() => {
+        observerRef.current = new IntersectionObserver(callback, options);
+        return () => {
+            if (observerRef.current) {
+                observerRef.current.disconnect();
+            }
+        };
+    }, dependencies);
+
+    return observerRef;
+};
+
 export const Header: React.FC = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-
     const { weddingData, isLoggedIn, logout, user } = useWedding();
     const navigate = useNavigate();
     const [activeSection, setActiveSection] = useState("hero");
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
     const [headerPosition, setHeaderPosition] = useState("-translate-y-full");
-    const [itemColor, setItemColor] = useState<
-        "text-gray-600" | "text-wedding-cream"
-    >("text-gray-600");
+    const [itemColor, setItemColor] = useState<"text-gray-600" | "text-wedding-cream">("text-gray-600");
 
-    const sections = useMemo(
+    // Enhanced sections data with labels included
+    const sections = useMemo<Section[]>(
         () => [
             { id: "hero", label: "Home", disabled: false },
             {
                 id: "story",
-                label: "Our Story",
+                label: "Our Story", 
                 disabled: weddingData?.story?.disabled,
             },
             {
@@ -41,14 +103,14 @@ export const Header: React.FC = () => {
                 disabled: weddingData?.wishDisabled,
             },
             {
-                id: "contact",
+                id: "contact", 
                 label: "Contact",
                 disabled: weddingData?.contact?.disabled,
             },
             { id: "info", label: "Info", disabled: true },
             {
                 id: "jewellery",
-                label: "Jewellery",
+                label: "Jewellery", 
                 disabled: weddingData?.jeweller?.disabled,
             },
         ],
@@ -61,67 +123,68 @@ export const Header: React.FC = () => {
         ],
     );
 
-    const mainObserver = useRef<IntersectionObserver | null>(null);
+    // Filter sections that should be rendered in navigation
+    const navigationSections = useMemo(() => 
+        sections.filter(section => 
+            !['info', 'jewellery'].includes(section.id) && !section.disabled
+        ), 
+        [sections]
+    );
 
-    useEffect(() => {
-        const options = {
-            root: null,
-            rootMargin: "0px 0px -50% 0px",
-            threshold: 0.3,
-        };
-
-        mainObserver.current = new IntersectionObserver((entries) => {
+    // Main section observer for active section tracking
+    const mainObserverRef = useIntersectionObserver(
+        (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     setActiveSection(entry.target.id);
                 }
             });
-        }, options);
+        },
+        {
+            root: null,
+            rootMargin: "0px 0px -50% 0px", 
+            threshold: 0.3,
+        },
+        [sections]
+    );
+
+    // Header visibility observer
+    const headerVisibilityObserverRef = useIntersectionObserver(
+        ([entry]) => {
+            if (!entry.isIntersecting) {
+                setHeaderPosition("translate-y-0");
+            } else {
+                setHeaderPosition("-translate-y-full");
+            }
+        },
+        {
+            root: null,
+            threshold: 0,
+        },
+        []
+    );
+
+    // Observe sections for main observer
+    useEffect(() => {
+        if (!mainObserverRef.current) return;
 
         sections.forEach(({ id }) => {
             const element = document.getElementById(id);
             if (element) {
-                mainObserver.current?.observe(element);
+                mainObserverRef.current?.observe(element);
             }
         });
+    }, [sections, mainObserverRef]);
 
-        return () => {
-            if (mainObserver.current) mainObserver.current.disconnect();
-        };
-    }, [sections]);
-
-    const headerVisibilityObserver = useRef<IntersectionObserver | null>(null);
-
+    // Observe header sentinel
     useEffect(() => {
         const sentinel = document.getElementById("top-sentinal");
-        const header = document.getElementById("header");
+        if (!sentinel || !headerVisibilityObserverRef.current) return;
 
-        if (!sentinel || !header) return;
+        headerVisibilityObserverRef.current.observe(sentinel);
+    }, [headerVisibilityObserverRef]);
 
-        const options = {
-            root: null,
-            threshold: 0,
-        };
-
-        headerVisibilityObserver.current = new IntersectionObserver(
-            ([entry]) => {
-                if (!entry.isIntersecting) {
-                    setHeaderPosition("translate-y-0");
-                } else {
-                    setHeaderPosition("-translate-y-full");
-                }
-            },
-            options,
-        );
-
-        headerVisibilityObserver.current.observe(sentinel);
-
-        return () => {
-            if (headerVisibilityObserver.current)
-                headerVisibilityObserver.current.disconnect();
-        };
-    }, []);
-
+    // Update item color based on active section
     useEffect(() => {
         setItemColor(
             activeSection === "details" || activeSection === "wishes"
@@ -131,12 +194,19 @@ export const Header: React.FC = () => {
     }, [activeSection]);
 
     const scrollToSection = useCallback((sectionId: string) => {
+        // Check if the section is disabled
+        const section = sections.find(s => s.id === sectionId);
+        if (section?.disabled) {
+            return; // Don't scroll to disabled sections
+        }
+        
         const element = document.getElementById(sectionId);
         
         // If element exists on current page, scroll to it
         if (element) {
             element.scrollIntoView({ behavior: "smooth" });
             setSidebarOpen(false);
+            setIsMobileMenuOpen(false);
             return;
         }
         
@@ -155,7 +225,8 @@ export const Header: React.FC = () => {
         }
         
         setSidebarOpen(false);
-    }, [navigate, user?.username])
+        setIsMobileMenuOpen(false);
+    }, [navigate, user?.username, sections]);
 
     const toggleSidebar = useCallback(
         () => setSidebarOpen((prev) => !prev),
@@ -163,6 +234,25 @@ export const Header: React.FC = () => {
     );
 
     const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+    
+    // Helper function to get section disabled state
+    const isSectionDisabled = useCallback((sectionId: string) => {
+        const section = sections.find(s => s.id === sectionId);
+        return section?.disabled || false;
+    }, [sections]);
+
+    // Render navigation buttons using map instead of hardcoded buttons
+    const renderNavigationButtons = (isMobile: boolean = false) => {
+        return navigationSections.map((section) => (
+            <NavigationButton
+                key={section.id}
+                section={section}
+                onClick={scrollToSection}
+                isMobile={isMobile}
+            />
+        ));
+    };
+    
     return (
         <header
             className={cn(
@@ -192,56 +282,9 @@ export const Header: React.FC = () => {
                     </button>
                 </Link>
 
+                {/* Desktop Navigation - using renderNavigationButtons */}
                 <div className="hidden md:flex space-x-6 font-light">
-                    <button
-                        onClick={() => scrollToSection("hero")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
-                        type="button"
-                    >
-                        Home
-                    </button>
-                    <button
-                        onClick={() => scrollToSection("story")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
-                        type="button"
-                    >
-                        Our Story
-                    </button>
-                    <button
-                        onClick={() => scrollToSection("details")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
-                        type="button"
-                    >
-                        Details
-                    </button>
-                    <button
-                        onClick={() => scrollToSection("schedule")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
-                        type="button"
-                    >
-                        Schedule
-                    </button>
-                    <button
-                        onClick={() => scrollToSection("gallery")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
-                        type="button"
-                    >
-                        Gallery
-                    </button>
-                    <button
-                        onClick={() => scrollToSection("wishes")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
-                        type="button"
-                    >
-                        Wishes
-                    </button>
-                    <button
-                        onClick={() => scrollToSection("contact")}
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase"
-                        type="button"
-                    >
-                        Contact
-                    </button>
+                    {renderNavigationButtons()}
                     <div className="flex items-center space-x-4">
                         {isLoggedIn && (
                             <Button onClick={logout} variant="outline">
@@ -250,6 +293,8 @@ export const Header: React.FC = () => {
                         )}
                     </div>
                 </div>
+
+                {/* Mobile menu toggle button */}
                 <button
                     className="md:hidden flex items-center"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -269,6 +314,7 @@ export const Header: React.FC = () => {
                 </button>
             </nav>
 
+            {/* Mobile Menu - using renderNavigationButtons */}
             <div
                 className={cn(
                     "fixed bg-white inset-0 z-40 flex flex-col pt-24 px-6 duration-500 transition-opacity transform ease-in-out md:hidden w-screen h-screen",
@@ -288,62 +334,14 @@ export const Header: React.FC = () => {
                 </button>
 
                 <nav className="flex flex-col space-y-6 text-lg bg-white font-light">
-                    <button
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("hero")}
-                        type="button"
-                    >
-                        Home
-                    </button>
-                    <button
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("story")}
-                        type="button"
-                    >
-                        Our Story
-                    </button>
-                    <button
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("details")}
-                        type="button"
-                    >
-                        Details
-                    </button>
-                    <button
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("schedule")}
-                        type="button"
-                    >
-                        Schedule
-                    </button>
-                    <button
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("gallery")}
-                        type="button"
-                    >
-                        Gallery
-                    </button>
-                    <button
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("wishes")}
-                        type="button"
-                    >
-                        Wishes
-                    </button>
-                    <button
-                        className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
-                        onClick={() => scrollToSection("contact")}
-                        type="button"
-                    >
-                        Contact
-                    </button>
+                    {renderNavigationButtons(true)}
                     {isLoggedIn && (
                         <button
                             className="text-gray-700 hover:text-pink-600 transition-colors uppercase text-center border-b"
                             onClick={logout}
                             type="button"
                         >
-                            {isLoggedIn ? "Logout" : "Login"}
+                            Logout
                         </button>
                     )}
                 </nav>

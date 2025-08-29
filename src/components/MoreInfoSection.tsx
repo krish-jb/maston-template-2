@@ -16,7 +16,9 @@ export const MoreInfoSection: React.FC = () => {
             moreInfo: { ...weddingData.moreInfo, content: newContent },
         });
     };
-
+    if (weddingData.moreInfo.disabled) {
+        return;
+    }
     return (
         <section className="py-20 bg-gray-50">
             <div className="container mx-auto px-4">

@@ -26,6 +26,10 @@ export const StorySection: React.FC = () => {
             story: { ...weddingData.story, image: imageData?.url || "" },
         });
     };
+    
+    if (weddingData.story.disabled) {
+        return;
+    }
 
     return (
         <section id="story" className="py-20 bg-white">
