@@ -17,6 +17,9 @@ export const ContactSection: React.FC = () => {
             contact: { ...weddingData.contact, [field]: value },
         });
     };
+    if (weddingData.contact.disabled) {
+        return;
+    }
 
     return (
         <section id="contact" className="py-20 bg-white">
