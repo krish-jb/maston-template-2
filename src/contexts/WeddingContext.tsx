@@ -5,10 +5,12 @@ import {
     type SetStateAction,
     useContext,
 } from "react";
-import type { User, WeddingData, WeddingWish } from "@/types/wedding";
+import type { User, WeddingData, WeddingWish, WeddingAd } from "@/types/wedding";
 
 export interface WeddingContextType {
     weddingData: WeddingData;
+    weddingAd: WeddingAd;
+    setWeddingAd: Dispatch<SetStateAction<WeddingAd>>;
     weddingWishes: Array<WeddingWish>;
     setWeddingWishes: Dispatch<SetStateAction<Array<WeddingWish>>>;
     user: User | null;
@@ -24,6 +26,7 @@ export interface WeddingContextType {
         index: number,
         oldImageName?: string,
     ) => Promise<void>;
+    loadWeddingAd: (partnerId: string) => Promise<{ weddingAd: any; weddingAdError: any }>;
     loadAllWeddingWishes: () => Promise<void>;
     saveData: (data: WeddingData) => Promise<boolean>;
     addWish: (data: WeddingWish) => Promise<void>;
